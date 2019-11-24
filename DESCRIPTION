@@ -1,0 +1,13 @@
+Package: deals
+Version: 0.1.0
+Title: Make Best Betting Decisions
+Description: Analyze betting deals and improve their presentation. 
+Authors@R: person("Dmytro", "Perepolkin", email = "dperepolkin@gmail.com", role = c("aut", "cre"), comment = structure("0000-0001-8558-6183", .Names = "ORCID"))
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+URL: https://github.com/dmi3kno/deals
+BugReports: https://github.com/dmi3kno/deals/issues
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
