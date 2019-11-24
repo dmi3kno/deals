@@ -44,8 +44,8 @@ Leland, Schneider, & Wilcox (2019) introduced definition of "transparent frames"
 # Allais paradox
 a1 <- list(
   data.frame(
-    p=c(0.995, 0.005),
-    x=c(5e5, 5), stringsAsFactors = FALSE),
+    p=c(1),
+    x=c(5e5), stringsAsFactors = FALSE),
   data.frame(
     p=c(0.1, 0.89, 0.01),
     x=c(2.5e6, 5e5, 0), stringsAsFactors = FALSE)

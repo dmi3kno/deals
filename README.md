@@ -41,17 +41,16 @@ one of them.
 # Allais paradox
 a1 <- list(
   data.frame(
-    p=c(0.995, 0.005),
-    x=c(5e5, 5), stringsAsFactors = FALSE),
+    p=c(1),
+    x=c(5e5), stringsAsFactors = FALSE),
   data.frame(
     p=c(0.1, 0.89, 0.01),
     x=c(2.5e6, 5e5, 0), stringsAsFactors = FALSE)
 )
 a1
 #> [[1]]
-#>       p     x
-#> 1 0.995 5e+05
-#> 2 0.005 5e+00
+#>   p     x
+#> 1 1 5e+05
 #> 
 #> [[2]]
 #>      p       x
@@ -62,18 +61,16 @@ deal_is_transparent(a1)
 #> [1] FALSE
 deal_make_transparent(a1)
 #> [[1]]
-#>       p     x
-#> 1 0.890 5e+05
-#> 2 0.100 5e+05
-#> 3 0.005 5e+05
-#> 4 0.005 5e+00
+#>      p     x
+#> 1 0.89 5e+05
+#> 2 0.10 5e+05
+#> 3 0.01 5e+05
 #> 
 #> [[2]]
-#>        p       x
-#> 1  0.890  500000
-#> 3  0.100 2500000
-#> 11 0.005       0
-#> 2  0.005       0
+#>       p       x
+#> 1  0.89  500000
+#> 3  0.10 2500000
+#> 11 0.01       0
 deal_is_transparent(deal_make_transparent(a1))
 #> [1] TRUE
 
