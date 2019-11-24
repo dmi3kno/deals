@@ -4,7 +4,7 @@
 \alias{df_to_deal}
 \title{Title}
 \usage{
-df_to_deal(df, names_from = "i")
+df_to_deal(df, names_from = "g")
 }
 \arguments{
 \item{a}{}

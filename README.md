@@ -25,6 +25,7 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(deals)
+library(magrittr)
 ## basic example code
 ```
 
@@ -41,377 +42,445 @@ one of them.
 # Allais paradox
 a1 <- list(
   data.frame(
+    x=c(5e5), 
     p=c(1),
-    x=c(5e5), stringsAsFactors = FALSE),
+    stringsAsFactors = FALSE),
   data.frame(
+    x=c(2.5e6, 5e5, 0), 
     p=c(0.1, 0.89, 0.01),
-    x=c(2.5e6, 5e5, 0), stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a1
-#> [[1]]
-#>   p     x
-#> 1 1 5e+05
-#> 
-#> [[2]]
-#>      p       x
-#> 1 0.10 2500000
-#> 2 0.89  500000
-#> 3 0.01       0
+
+a1 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL)
+```
+
+|     |         |                    |     |           |                       |
+| :-- | :------ | :----------------- | :-- | :-------- | :-------------------- |
+| G1: | 500,000 | with probability 1 | G2: | 2,500,000 | with probability 0.10 |
+|     |         |                    |     | 500,000   | with probability 0.89 |
+|     |         |                    |     | 0         | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(a1)
 #> [1] FALSE
-deal_make_transparent(a1)
-#> [[1]]
-#>      p     x
-#> 1 0.89 5e+05
-#> 2 0.10 5e+05
-#> 3 0.01 5e+05
-#> 
-#> [[2]]
-#>       p       x
-#> 1  0.89  500000
-#> 3  0.10 2500000
-#> 11 0.01       0
+
+deal_make_transparent(a1) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |         |                       |     |           |                       |
+| :-- | :------ | :-------------------- | :-- | :-------- | :-------------------- |
+| G1: | 500,000 | with probability 0.89 | G2: | 500,000   | with probability 0.89 |
+|     | 500,000 | with probability 0.10 |     | 2,500,000 | with probability 0.10 |
+|     | 500,000 | with probability 0.01 |     | 0         | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a1))
 #> [1] TRUE
+```
 
+``` r
 a2 <- list(
   data.frame(
+    x=c(5e5,0), 
     p=c(0.11,0.89),
-    x=c(5e5,0), stringsAsFactors = FALSE),
+    stringsAsFactors = FALSE),
   data.frame(
+    x=c(2.5e6,0), 
     p=c(0.10,0.90),
-    x=c(2.5e6,0), stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a2
-#> [[1]]
-#>      p     x
-#> 1 0.11 5e+05
-#> 2 0.89 0e+00
-#> 
-#> [[2]]
-#>     p       x
-#> 1 0.1 2500000
-#> 2 0.9       0
+a2 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |         |                       |     |           |                      |
+| :-- | :------ | :-------------------- | :-- | :-------- | :------------------- |
+| G1: | 500,000 | with probability 0.11 | G2: | 2,500,000 | with probability 0.1 |
+|     | 0       | with probability 0.89 |     | 0         | with probability 0.9 |
+
+``` r
+
 deal_is_transparent(a2)
 #> [1] FALSE
-deal_make_transparent(a2)
-#> [[1]]
-#>      p     x
-#> 1 0.89 0e+00
-#> 2 0.10 5e+05
-#> 3 0.01 5e+05
-#> 
-#> [[2]]
-#>       p       x
-#> 1  0.89       0
-#> 2  0.10 2500000
-#> 11 0.01       0
+
+deal_make_transparent(a2) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |         |                       |     |           |                       |
+| :-- | :------ | :-------------------- | :-- | :-------- | :-------------------- |
+| G1: | 0       | with probability 0.89 | G2: | 0         | with probability 0.89 |
+|     | 500,000 | with probability 0.10 |     | 2,500,000 | with probability 0.10 |
+|     | 500,000 | with probability 0.01 |     | 0         | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a2))
 #> [1] TRUE
+```
 
+``` r
 a3 <- list(
   data.frame(
+    x=c(0,  45, 30, -15, -15), 
     p=c(0.9, 0.06, 0.01, 0.01, 0.02),
-    x=c(0,  45, 30, -15, -15), stringsAsFactors = FALSE),
+    stringsAsFactors = FALSE),
   data.frame(
+    x=c(0,  45, 45, -10, -15), 
     p=c(0.9, 0.06, 0.01, 0.01, 0.02),
-    x=c(0,  45, 45, -10, -15), stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a3
-#> [[1]]
-#>      p   x
-#> 1 0.90   0
-#> 2 0.06  45
-#> 3 0.01  30
-#> 4 0.01 -15
-#> 5 0.02 -15
-#> 
-#> [[2]]
-#>      p   x
-#> 1 0.90   0
-#> 2 0.06  45
-#> 3 0.01  45
-#> 4 0.01 -10
-#> 5 0.02 -15
+
+a3 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |      |                       |     |      |                       |
+| :-- | :--- | :-------------------- | :-- | :--- | :-------------------- |
+| G1: | 0    | with probability 0.90 | G2: | 0    | with probability 0.90 |
+|     | 45   | with probability 0.06 |     | 45   | with probability 0.06 |
+|     | 30   | with probability 0.01 |     | 45   | with probability 0.01 |
+|     | \-15 | with probability 0.01 |     | \-10 | with probability 0.01 |
+|     | \-15 | with probability 0.02 |     | \-15 | with probability 0.02 |
+
+``` r
+
 # this one is transparent
 deal_is_transparent(a3)
 #> [1] TRUE
-deal_make_transparent(a3)
-#> [[1]]
-#>      p   x
-#> 1 0.90   0
-#> 2 0.06  45
-#> 3 0.01  30
-#> 4 0.01 -15
-#> 5 0.02 -15
-#> 
-#> [[2]]
-#>      p   x
-#> 1 0.90   0
-#> 2 0.06  45
-#> 3 0.01  45
-#> 4 0.01 -10
-#> 5 0.02 -15
+
+deal_make_transparent(a3) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |      |                       |     |      |                       |
+| :-- | :--- | :-------------------- | :-- | :--- | :-------------------- |
+| G1: | 0    | with probability 0.90 | G2: | 0    | with probability 0.90 |
+|     | 45   | with probability 0.06 |     | 45   | with probability 0.06 |
+|     | 30   | with probability 0.01 |     | 45   | with probability 0.01 |
+|     | \-15 | with probability 0.01 |     | \-10 | with probability 0.01 |
+|     | \-15 | with probability 0.02 |     | \-15 | with probability 0.02 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a3))
 #> [1] TRUE
+```
 
+``` r
 a4 <- list(
   data.frame(
+    x=c(0,  45, 30, -15), 
     p=c(0.9, 0.06, 0.01, 0.03),
-    x=c(0,  45, 30, -15), stringsAsFactors = FALSE),
+    stringsAsFactors = FALSE),
   data.frame(
+    x=c(0,  45, -10, -15), 
     p=c(0.9, 0.07, 0.01, 0.02),
-    x=c(0,  45, -10, -15), stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a4
-#> [[1]]
-#>      p   x
-#> 1 0.90   0
-#> 2 0.06  45
-#> 3 0.01  30
-#> 4 0.03 -15
-#> 
-#> [[2]]
-#>      p   x
-#> 1 0.90   0
-#> 2 0.07  45
-#> 3 0.01 -10
-#> 4 0.02 -15
+a4 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |      |                       |     |      |                       |
+| :-- | :--- | :-------------------- | :-- | :--- | :-------------------- |
+| G1: | 0    | with probability 0.90 | G2: | 0    | with probability 0.90 |
+|     | 45   | with probability 0.06 |     | 45   | with probability 0.07 |
+|     | 30   | with probability 0.01 |     | \-10 | with probability 0.01 |
+|     | \-15 | with probability 0.03 |     | \-15 | with probability 0.02 |
+
+``` r
+
 deal_is_transparent(a4)
 #> [1] FALSE
-deal_make_transparent(a4)
-#> [[1]]
-#>       p   x
-#> 1  0.90   0
-#> 2  0.06  45
-#> 3  0.02 -15
-#> 31 0.01  30
-#> 21 0.00   0
-#> 11 0.01 -15
-#> 
-#> [[2]]
-#>       p   x
-#> 1  0.90   0
-#> 2  0.06  45
-#> 3  0.02 -15
-#> 4  0.01  45
-#> 31 0.00   0
-#> 21 0.01 -10
+
+deal_make_transparent(a4) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |      |                       |     |      |                       |
+| :-- | :--- | :-------------------- | :-- | :--- | :-------------------- |
+| G1: | 0    | with probability 0.90 | G2: | 0    | with probability 0.90 |
+|     | 45   | with probability 0.06 |     | 45   | with probability 0.06 |
+|     | \-15 | with probability 0.02 |     | \-15 | with probability 0.02 |
+|     | 30   | with probability 0.01 |     | 45   | with probability 0.01 |
+|     | 0    | with probability 0.00 |     | 0    | with probability 0.00 |
+|     | \-15 | with probability 0.01 |     | \-10 | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a4))
 #> [1] TRUE
+```
 
+``` r
 a5 <- list(
   data.frame(
+    x=c(2500,  2400, 0), 
     p=c(0.33, 0.66, 0.01),
-    x=c(2500,  2400, 0), stringsAsFactors = FALSE),
+    stringsAsFactors = FALSE),
   data.frame(
+    x=c(2400,  2400, 2400), 
     p=c(0.33, 0.66, 0.01),
-    x=c(2400,  2400, 2400), stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a5
-#> [[1]]
-#>      p    x
-#> 1 0.33 2500
-#> 2 0.66 2400
-#> 3 0.01    0
-#> 
-#> [[2]]
-#>      p    x
-#> 1 0.33 2400
-#> 2 0.66 2400
-#> 3 0.01 2400
+a5 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                       |     |       |                       |
+| :-- | :---- | :-------------------- | :-- | :---- | :-------------------- |
+| G1: | 2,500 | with probability 0.33 | G2: | 2,400 | with probability 0.33 |
+|     | 2,400 | with probability 0.66 |     | 2,400 | with probability 0.66 |
+|     | 0     | with probability 0.01 |     | 2,400 | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(a5)
 #> [1] TRUE
-deal_make_transparent(a5)
-#> [[1]]
-#>      p    x
-#> 1 0.33 2500
-#> 2 0.66 2400
-#> 3 0.01    0
-#> 
-#> [[2]]
-#>      p    x
-#> 1 0.33 2400
-#> 2 0.66 2400
-#> 3 0.01 2400
+deal_make_transparent(a5) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                       |     |       |                       |
+| :-- | :---- | :-------------------- | :-- | :---- | :-------------------- |
+| G1: | 2,500 | with probability 0.33 | G2: | 2,400 | with probability 0.33 |
+|     | 2,400 | with probability 0.66 |     | 2,400 | with probability 0.66 |
+|     | 0     | with probability 0.01 |     | 2,400 | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a5))
 #> [1] TRUE
+```
 
+``` r
 a6 <- list(
   data.frame(
+    x=c(2500, 0), 
     p=c(0.33, 0.67),
-    x=c(2500, 0), stringsAsFactors = FALSE),
+    stringsAsFactors = FALSE),
   data.frame(
+    x=c(2400, 0), 
     p=c(0.34, 0.66),
-    x=c(2400, 0), stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a6
-#> [[1]]
-#>      p    x
-#> 1 0.33 2500
-#> 2 0.67    0
-#> 
-#> [[2]]
-#>      p    x
-#> 1 0.34 2400
-#> 2 0.66    0
+a6 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                       |     |       |                       |
+| :-- | :---- | :-------------------- | :-- | :---- | :-------------------- |
+| G1: | 2,500 | with probability 0.33 | G2: | 2,400 | with probability 0.34 |
+|     | 0     | with probability 0.67 |     | 0     | with probability 0.66 |
+
+``` r
+
 deal_is_transparent(a6)
 #> [1] FALSE
-deal_make_transparent(a6)
-#> [[1]]
-#>       p    x
-#> 1  0.66    0
-#> 2  0.33 2500
-#> 11 0.01    0
-#> 
-#> [[2]]
-#>      p    x
-#> 1 0.66    0
-#> 2 0.33 2400
-#> 3 0.01 2400
+
+deal_make_transparent(a6) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                       |     |       |                       |
+| :-- | :---- | :-------------------- | :-- | :---- | :-------------------- |
+| G1: | 0     | with probability 0.66 | G2: | 0     | with probability 0.66 |
+|     | 2,500 | with probability 0.33 |     | 2,400 | with probability 0.33 |
+|     | 0     | with probability 0.01 |     | 2,400 | with probability 0.01 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a6))
 #> [1] TRUE
+```
 
+``` r
 a7 <- list(
   data.frame(
+    x=c(4000, 0), 
     p=c(0.8, 0.2),
-    x=c(4000, 0), stringsAsFactors=FALSE),
+    stringsAsFactors=FALSE),
   data.frame(
+    x=c(3000,3000), 
     p=c(0.8, 0.2),
-    x=c(3000,3000),stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a7
-#> [[1]]
-#>     p    x
-#> 1 0.8 4000
-#> 2 0.2    0
-#> 
-#> [[2]]
-#>     p    x
-#> 1 0.8 3000
-#> 2 0.2 3000
+a7 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                      |     |       |                      |
+| :-- | :---- | :------------------- | :-- | :---- | :------------------- |
+| G1: | 4,000 | with probability 0.8 | G2: | 3,000 | with probability 0.8 |
+|     | 0     | with probability 0.2 |     | 3,000 | with probability 0.2 |
+
+``` r
+
 deal_is_transparent(a7)
 #> [1] TRUE
-deal_make_transparent(a7)
-#> [[1]]
-#>     p    x
-#> 1 0.8 4000
-#> 2 0.2    0
-#> 
-#> [[2]]
-#>     p    x
-#> 1 0.8 3000
-#> 2 0.2 3000
+
+deal_make_transparent(a7) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                      |     |       |                      |
+| :-- | :---- | :------------------- | :-- | :---- | :------------------- |
+| G1: | 4,000 | with probability 0.8 | G2: | 3,000 | with probability 0.8 |
+|     | 0     | with probability 0.2 |     | 3,000 | with probability 0.2 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a7))
 #> [1] TRUE
+```
 
-
+``` r
 a8 <- list(
   data.frame(
+    x=c(4000, 0), 
     p=c(0.2, 0.8),
-    x=c(4000, 0), stringsAsFactors=FALSE),
+    stringsAsFactors=FALSE),
   data.frame(
+    x=c(3000, 0), 
     p=c(0.25, 0.75),
-    x=c(3000, 0),stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a8
-#> [[1]]
-#>     p    x
-#> 1 0.2 4000
-#> 2 0.8    0
-#> 
-#> [[2]]
-#>      p    x
-#> 1 0.25 3000
-#> 2 0.75    0
+a8 %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                      |     |       |                       |
+| :-- | :---- | :------------------- | :-- | :---- | :-------------------- |
+| G1: | 4,000 | with probability 0.2 | G2: | 3,000 | with probability 0.25 |
+|     | 0     | with probability 0.8 |     | 0     | with probability 0.75 |
+
+``` r
+
 deal_is_transparent(a8)
 #> [1] FALSE
-deal_make_transparent(a8)
-#> [[1]]
-#>       p    x
-#> 1  0.75    0
-#> 2  0.20 4000
-#> 11 0.05    0
-#> 
-#> [[2]]
-#>      p    x
-#> 1 0.75    0
-#> 2 0.20 3000
-#> 3 0.05 3000
+
+deal_make_transparent(a8) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |       |                       |     |       |                       |
+| :-- | :---- | :-------------------- | :-- | :---- | :-------------------- |
+| G1: | 0     | with probability 0.75 | G2: | 0     | with probability 0.75 |
+|     | 4,000 | with probability 0.20 |     | 3,000 | with probability 0.20 |
+|     | 0     | with probability 0.05 |     | 3,000 | with probability 0.05 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a8))
 #> [1] TRUE
+```
 
+``` r
 a9r <- list(
   data.frame(
+    x=c(8, 0), 
     p=c(0.1, 0.9),
-    x=c(8, 0), stringsAsFactors=FALSE),
+    stringsAsFactors=FALSE),
   data.frame(
+    x=c(20, 0),
     p=c(0.05, 0.95),
-    x=c(20, 0),stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a9r
-#> [[1]]
-#>     p x
-#> 1 0.1 8
-#> 2 0.9 0
-#> 
-#> [[2]]
-#>      p  x
-#> 1 0.05 20
-#> 2 0.95  0
+a9r %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |   |                      |     |    |                       |
+| :-- | :- | :------------------- | :-- | :- | :-------------------- |
+| G1: | 8 | with probability 0.1 | G2: | 20 | with probability 0.05 |
+|     | 0 | with probability 0.9 |     | 0  | with probability 0.95 |
+
+``` r
+
 deal_is_transparent(a9r)
 #> [1] FALSE
-deal_make_transparent(a9r)
-#> [[1]]
-#>      p x
-#> 1 0.90 0
-#> 2 0.05 8
-#> 3 0.05 8
-#> 
-#> [[2]]
-#>       p  x
-#> 1  0.90  0
-#> 2  0.05 20
-#> 11 0.05  0
+
+deal_make_transparent(a9r) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |   |                       |     |    |                                     |
+| :-- | :- | :-------------------- | :-- | :- | :---------------------------------- |
+| G1: | 0 | with probability 0.90 | G2: | 0  | with probability 0.9000000000000000 |
+|     | 8 | with probability 0.05 |     | 20 | with probability 0.0500000000000000 |
+|     | 8 | with probability 0.05 |     | 0  | with probability 0.0499999999999999 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a9r))
 #> [1] TRUE
 
 a9b <- list(
   data.frame(
+    x=c(8, 0), 
     p=c(0.6, 0.4),
-    x=c(8, 0), stringsAsFactors=FALSE),
+    stringsAsFactors=FALSE),
   data.frame(
+    x=c(20, 0),
     p=c(0.3, 0.7),
-    x=c(20, 0),stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE)
 )
-a9b
-#> [[1]]
-#>     p x
-#> 1 0.6 8
-#> 2 0.4 0
-#> 
-#> [[2]]
-#>     p  x
-#> 1 0.3 20
-#> 2 0.7  0
+a9b %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |   |                      |     |    |                      |
+| :-- | :- | :------------------- | :-- | :- | :------------------- |
+| G1: | 8 | with probability 0.6 | G2: | 20 | with probability 0.3 |
+|     | 0 | with probability 0.4 |     | 0  | with probability 0.7 |
+
+``` r
+
 deal_is_transparent(a9b)
 #> [1] FALSE
-deal_make_transparent(a9b)
-#> [[1]]
-#>     p x
-#> 1 0.4 0
-#> 2 0.3 8
-#> 3 0.3 8
-#> 
-#> [[2]]
-#>      p  x
-#> 1  0.4  0
-#> 2  0.3 20
-#> 11 0.3  0
+
+deal_make_transparent(a9b) %>% 
+  deal_to_textdf() %>% 
+  knitr::kable(col.names = NULL) 
+```
+
+|     |   |                      |     |    |                      |
+| :-- | :- | :------------------- | :-- | :- | :------------------- |
+| G1: | 0 | with probability 0.4 | G2: | 0  | with probability 0.4 |
+|     | 8 | with probability 0.3 |     | 20 | with probability 0.3 |
+|     | 8 | with probability 0.3 |     | 0  | with probability 0.3 |
+
+``` r
+
 deal_is_transparent(deal_make_transparent(a9b))
 #> [1] TRUE
 ```
 
-References: Leland, J. W., Schneider, M., & Wilcox, N. T. (2019).
-Minimal Frames and Transparent Frames for Risk, Time, and Uncertainty.
-Management Science.
+References:
+
+Leland, J. W., Schneider, M., & Wilcox, N. T. (2019). Minimal Frames and
+Transparent Frames for Risk, Time, and Uncertainty. Management Science.
