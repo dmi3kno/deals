@@ -1,7 +1,7 @@
 Package: deals
 Version: 0.1.0
-Title: Make Best Betting Decisions
-Description: Analyze betting deals and improve their presentation. 
+Title: Dealing with uncertainty. The choice is yours!
+Description: Experiments with decisions under uncertainty, presentation of uncertain prospects and study of decision paradoxes. 
 Authors@R: person("Dmytro", "Perepolkin", email = "dperepolkin@gmail.com", role = c("aut", "cre"), comment = structure("0000-0001-8558-6183", .Names = "ORCID"))
 License: MIT + file LICENSE
 Encoding: UTF-8
