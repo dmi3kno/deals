@@ -2,13 +2,32 @@
 % Please edit documentation in R/utils.R
 \name{deal_to_df}
 \alias{deal_to_df}
-\title{Title}
+\title{Convert deal to dataframe representation}
 \usage{
 deal_to_df(a, names_to = "g")
 }
 \arguments{
-\item{a}{}
+\item{a}{deal}
+
+\item{names_to}{column name for placing gamble identifiers}
+}
+\value{
+dataframe with 3 columns: gamble number, outcome and corresponding probability.
 }
 \description{
-Title
+Convert deal to dataframe representation
+}
+\examples{
+
+a <- list(
+  data.frame(
+    x=c(5e5,0),
+    p=c(0.11,0.89)),
+  data.frame(
+    x=c(2.5e6,0),
+    p=c(0.10,0.90))
+)
+
+deal_to_df(a)
+
 }

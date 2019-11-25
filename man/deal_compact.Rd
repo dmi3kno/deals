@@ -2,13 +2,30 @@
 % Please edit documentation in R/utils.R
 \name{deal_compact}
 \alias{deal_compact}
-\title{Title}
+\title{Compact the deal}
 \usage{
 deal_compact(a)
 }
 \arguments{
-\item{a}{}
+\item{a}{deal}
+}
+\value{
+"compacted" deal, i.e. deal with distinct outcomes
 }
 \description{
-Title
+Compact the deal
+}
+\examples{
+
+a <- list(
+  data.frame(
+    x=c(2500,  2400, 0),
+    p=c(0.33, 0.66, 0.01)),
+  data.frame(
+    x=c(2400,  2400, 2400),
+    p=c(0.33, 0.66, 0.01))
+)
+
+deal_compact(a)
+
 }

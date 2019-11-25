@@ -2,13 +2,29 @@
 % Please edit documentation in R/deals.R
 \name{deal_make_transparent}
 \alias{deal_make_transparent}
-\title{Title}
+\title{Make the deal transparent}
 \usage{
 deal_make_transparent(a)
 }
 \arguments{
-\item{a}{}
+\item{a}{deal}
+}
+\value{
+transparent deal
 }
 \description{
-Title
+Make the deal transparent
+}
+\examples{
+a <- list(
+  data.frame(
+   x=c(5e5),
+   p=c(1)),
+  data.frame(
+   x=c(2.5e6, 5e5, 0),
+   p=c(0.1, 0.89, 0.01))
+)
+
+deal_make_transparent(a)
+
 }

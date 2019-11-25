@@ -2,13 +2,26 @@
 % Please edit documentation in R/utils.R
 \name{df_to_deal}
 \alias{df_to_deal}
-\title{Title}
+\title{Convert data frame to deal}
 \usage{
-df_to_deal(df, names_from = "g")
+df_to_deal(df, names_from = NULL)
 }
 \arguments{
-\item{a}{}
+\item{df}{data frame of 3 columns: gamble id, outcome \code{x} and corresponding probability \code{p}}
+
+\item{names_from}{character name of the column, containing gamble id. If missing, it will be a first column other than \code{p} and \code{x}}
+}
+\value{
+deal
 }
 \description{
-Title
+Convert data frame to deal
+}
+\examples{
+df <- data.frame(g=c("G1","G2","G2"),
+                 x=c(100, 200, 50),
+                 p=c(1, 0.5, 0.5)
+)
+df_to_deal(df)
+
 }

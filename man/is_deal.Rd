@@ -2,13 +2,29 @@
 % Please edit documentation in R/utils.R
 \name{is_deal}
 \alias{is_deal}
-\title{Title}
+\title{Check if the object is a valid deal}
 \usage{
 is_deal(a)
 }
 \arguments{
-\item{a}{}
+\item{a}{list}
+}
+\value{
+logical value for whether a list is a deal
 }
 \description{
-Title
+Check if the object is a valid deal
+}
+\examples{
+a <- list(
+  data.frame(
+    x=c(2500, 0),
+    p=c(0.33, 0.67)),
+  data.frame(
+    x=c(2400, 0),
+    p=c(0.34, 0.66))
+)
+
+is_deal(a)
+
 }

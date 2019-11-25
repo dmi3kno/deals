@@ -2,13 +2,28 @@
 % Please edit documentation in R/deals.R
 \name{deal_is_transparent}
 \alias{deal_is_transparent}
-\title{Title}
+\title{Check if the deal is transparent}
 \usage{
-deal_is_transparent(a, precision = 6)
+deal_is_transparent(a)
 }
 \arguments{
-\item{a}{}
+\item{a}{deal to check}
+}
+\value{
+logical value of whether the deal is transparent
 }
 \description{
-Title
+Check if the deal is transparent
+}
+\examples{
+a <- list(
+  data.frame(
+   x=c(5e5),
+   p=c(1)),
+  data.frame(
+   x=c(2.5e6, 5e5, 0),
+   p=c(0.1, 0.89, 0.01))
+)
+
+deal_is_transparent(a)
 }

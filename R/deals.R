@@ -1,12 +1,22 @@
-
-#' Title
+#' Check if the deal is transparent
 #'
-#' @param a
+#' @param a deal to check
 #'
-#' @return
-#' @export
+#' @return logical value of whether the deal is transparent
 #'
 #' @examples
+#' a <- list(
+#'   data.frame(
+#'    x=c(5e5),
+#'    p=c(1)),
+#'   data.frame(
+#'    x=c(2.5e6, 5e5, 0),
+#'    p=c(0.1, 0.89, 0.01))
+#' )
+#'
+#' deal_is_transparent(a)
+#' @importFrom stats aggregate complete.cases reshape
+#' @export
 deal_is_transparent <- function(a){
 
   max_p_decimalplaces <- max(get_decimalplaces(Reduce(c, lapply(a, `[[`, "p"))), na.rm = TRUE)
@@ -17,7 +27,7 @@ deal_is_transparent <- function(a){
   dfr <- reshape(df, direction = "wide", idvar = c("x", "p"), timevar = "g")
   dfr <- dfr[!complete.cases(dfr),]
   dfr[is.na(dfr)] <- 0
-  dfra <- aggregate(p~., data=dfr, FUN="sum")
+  dfra <- stats::aggregate(p~., data=dfr, FUN="sum")
 
   ps <- lapply(ar, `[[`, "p")
   xs <- lapply(ar, `[[`, "x")
@@ -27,14 +37,26 @@ deal_is_transparent <- function(a){
   sum(duplicated(dfra[["x"]]))==0
 }
 
-#' Title
+#' Make the deal transparent
 #'
-#' @param a
+#' @param a deal
 #'
-#' @return
-#' @export
+#' @return transparent deal
 #'
 #' @examples
+#' a <- list(
+#'   data.frame(
+#'    x=c(5e5),
+#'    p=c(1)),
+#'   data.frame(
+#'    x=c(2.5e6, 5e5, 0),
+#'    p=c(0.1, 0.89, 0.01))
+#' )
+#'
+#' deal_make_transparent(a)
+#'
+#' @importFrom utils head tail
+#' @export
 deal_make_transparent <- function(a){
 
   stopifnot(is_deal(a))
@@ -96,14 +118,26 @@ deal_make_transparent <- function(a){
   lapply(unmatched_dfs, function(x) rbind(matched_df, x)[, c("x", "p")])
 }
 
-#' Title
+#' Convert deal to dataframe for pretty printing
 #'
-#' @param a
+#' @param a deal
+#' @param big.mark thousand separator. Default is comma.
 #'
-#' @return
-#' @export
+#' @return dataframe with 2 pairs of 3 columns: gamble number, outcome and corresponding probability
 #'
 #' @examples
+#' a <- list(
+#'   data.frame(
+#'    x=c(5e5),
+#'    p=c(1)),
+#'   data.frame(
+#'    x=c(2.5e6, 5e5, 0),
+#'    p=c(0.1, 0.89, 0.01))
+#' )
+#'
+#' deal_to_textdf(a)
+#'
+#' @export
 deal_to_textdf <- function(a, big.mark=","){
   maxrow <- Reduce(max, lapply(a, nrow))
   ar <- lapply(a, function(df){df[[".rownum"]] <- seq.int(nrow(df));df})
