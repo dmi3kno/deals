@@ -7,15 +7,17 @@
 #' @export
 #'
 #' @examples
-deal_is_transparent <- function(a, precision=6){
-  ar <- lapply(a, function(x) {x[["p"]] <- round(x[["p"]], precision); x})
+deal_is_transparent <- function(a){
+
+  max_p_decimalplaces <- max(get_decimalplaces(Reduce(c, lapply(a, `[[`, "p"))), na.rm = TRUE)
+  ar <- lapply(a, function(x) {x[["p"]] <- round(x[["p"]], max_p_decimalplaces); x})
   df <- deal_to_df(ar)
   df$v <- 1
   df <- unique(df)
   dfr <- reshape(df, direction = "wide", idvar = c("x", "p"), timevar = "g")
   dfr <- dfr[!complete.cases(dfr),]
   dfr[is.na(dfr)] <- 0
-  dfra <- aggregate(p~., data=dfr, FUN="sum", na.action = )
+  dfra <- aggregate(p~., data=dfr, FUN="sum")
 
   ps <- lapply(ar, `[[`, "p")
   xs <- lapply(ar, `[[`, "x")
@@ -49,7 +51,7 @@ deal_make_transparent <- function(a){
     match_indices <- lapply(a_compacted, function(i) match(ax_intersected, i$x))
     matched <- mapply(function(df, i){df[i,]}, a_compacted, match_indices, SIMPLIFY = FALSE)
     unmatched <-mapply(function(df, i){df[-i,]}, a_compacted, match_indices, SIMPLIFY = FALSE)
-    p_new <- matched[[1]][["p"]] - matched[[2]][["p"]]
+    p_new <- round(matched[[1]][["p"]] - matched[[2]][["p"]], max_p_decimalplaces)
 
     matched_df <- data.frame(x=matched[[1]][["x"]],
                              p=pmin(matched[[1]][["p"]], matched[[2]][["p"]]))
@@ -71,8 +73,9 @@ deal_make_transparent <- function(a){
                           tgt} )
 
     p_diff <-targets_lst[[1]][["p"]] - targets_lst[[2]][["p"]]
+    p_diff <- round(p_diff, get_decimalplaces(p_diff))
 
-    if(abs(p_diff)>1e-6){
+    if(abs(p_diff)>0){
       if(p_diff>0){
         targets_lst[[1]] <- data.frame(x=rep.int(unmatched_dfs[[1]][["x"]][i],2),
                                        p=round(c(unmatched_dfs[[2]][["p"]][i], p_diff), max_p_decimalplaces),

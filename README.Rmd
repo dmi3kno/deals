@@ -256,7 +256,7 @@ a9r <- list(
     p=c(0.05, 0.95),
     stringsAsFactors = FALSE)
 )
-a9r %>% 
+a9r %>%
   deal_to_textdf() %>% 
   knitr::kable(col.names = NULL) 
 

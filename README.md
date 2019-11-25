@@ -407,7 +407,7 @@ a9r <- list(
     p=c(0.05, 0.95),
     stringsAsFactors = FALSE)
 )
-a9r %>% 
+a9r %>%
   deal_to_textdf() %>% 
   knitr::kable(col.names = NULL) 
 ```
@@ -427,11 +427,11 @@ deal_make_transparent(a9r) %>%
   knitr::kable(col.names = NULL) 
 ```
 
-|     |   |                       |     |    |                                     |
-| :-- | :- | :-------------------- | :-- | :- | :---------------------------------- |
-| G1: | 0 | with probability 0.90 | G2: | 0  | with probability 0.9000000000000000 |
-|     | 8 | with probability 0.05 |     | 20 | with probability 0.0500000000000000 |
-|     | 8 | with probability 0.05 |     | 0  | with probability 0.0499999999999999 |
+|     |   |                       |     |    |                       |
+| :-- | :- | :-------------------- | :-- | :- | :-------------------- |
+| G1: | 0 | with probability 0.90 | G2: | 0  | with probability 0.90 |
+|     | 8 | with probability 0.05 |     | 20 | with probability 0.05 |
+|     | 8 | with probability 0.05 |     | 0  | with probability 0.05 |
 
 ``` r
 
