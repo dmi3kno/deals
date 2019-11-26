@@ -9,8 +9,8 @@ fg_color <- "#0a2239"
 
 pills_hex <- image_canvas_hex(fill_color = bg_color) %>%
   image_composite(pills, gravity = "center", offset = "+0-100") %>%
-  image_annotate("deals", gravity = "center", location = "+0+400", size=300, font="Aller", weight = 700, color = fg_color) %>%
-  image_composite(image_canvas_hexborder(border_color = fg_color, border_size = 4))
+  image_annotate("deals", gravity = "center", location = "+0+400", size=300, font="Aller", color = fg_color) %>%
+  image_composite(image_canvas_hexborder(border_color = fg_color, border_size = 3))
 
 pills_hex %>%
   image_scale("1200x1200") %>%
