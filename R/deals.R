@@ -68,6 +68,7 @@ deal_make_transparent <- function(a){
 
   a_compacted <- deal_compact(a)
   unmatched_dfs <- a_compacted
+  matched_df <- NULL
   ax_intersected <- intersect(a[[1]][["x"]], a[[2]][["x"]])
   if(length(ax_intersected)>0){
     match_indices <- lapply(a_compacted, function(i) match(ax_intersected, i$x))

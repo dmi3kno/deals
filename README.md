@@ -7,8 +7,8 @@
 
 <!-- badges: end -->
 
-The goal of deals is to faclitiate operations with and presentation of
-decisions under uncertainty.
+The purpose of `deals` is to faclitiate operations with and presentation
+of decisions under uncertainty.
 
 ## Installation
 
@@ -311,6 +311,9 @@ deal_is_transparent(deal_make_transparent(a6))
 #> [1] TRUE
 ```
 
+The following pair of deals constitute Allais Paradox. Second deal is
+proportionate copy of the first one.
+
 ``` r
 a7 <- list(
   data.frame(
@@ -318,8 +321,8 @@ a7 <- list(
     p=c(0.8, 0.2),
     stringsAsFactors=FALSE),
   data.frame(
-    x=c(3000,3000), 
-    p=c(0.8, 0.2),
+    x=c(3000), 
+    p=c(1),
     stringsAsFactors = FALSE)
 )
 a7 %>% 
@@ -327,15 +330,15 @@ a7 %>%
   knitr::kable(col.names = NULL) 
 ```
 
-|     |       |                      |     |       |                      |
-| :-- | :---- | :------------------- | :-- | :---- | :------------------- |
-| G1: | 4,000 | with probability 0.8 | G2: | 3,000 | with probability 0.8 |
-|     | 0     | with probability 0.2 |     | 3,000 | with probability 0.2 |
+|     |       |                      |     |       |                    |
+| :-- | :---- | :------------------- | :-- | :---- | :----------------- |
+| G1: | 4,000 | with probability 0.8 | G2: | 3,000 | with probability 1 |
+|     | 0     | with probability 0.2 |     |       |                    |
 
 ``` r
 
 deal_is_transparent(a7)
-#> [1] TRUE
+#> [1] FALSE
 
 deal_make_transparent(a7) %>% 
   deal_to_textdf() %>% 
@@ -344,8 +347,8 @@ deal_make_transparent(a7) %>%
 
 |     |       |                      |     |       |                      |
 | :-- | :---- | :------------------- | :-- | :---- | :------------------- |
-| G1: | 4,000 | with probability 0.8 | G2: | 3,000 | with probability 0.8 |
-|     | 0     | with probability 0.2 |     | 3,000 | with probability 0.2 |
+| G1: | 0     | with probability 0.2 | G2: | 3,000 | with probability 0.2 |
+|     | 4,000 | with probability 0.8 |     | 3,000 | with probability 0.8 |
 
 ``` r
 
@@ -395,6 +398,8 @@ deal_make_transparent(a8) %>%
 deal_is_transparent(deal_make_transparent(a8))
 #> [1] TRUE
 ```
+
+The following pair of deals exemplify Ellsberg Paradox.
 
 ``` r
 a9r <- list(
@@ -484,3 +489,6 @@ References:
 
 Leland, J. W., Schneider, M., & Wilcox, N. T. (2019). Minimal Frames and
 Transparent Frames for Risk, Time, and Uncertainty. Management Science.
+
+Stochastic dominance:
+<http://nejchladnik.com/blog/2015/11/14/the-concept-of-stochastic-dominance/>
